@@ -33,7 +33,8 @@ class DocRaptor
       :document_type              => "pdf",
       :test                       => false,
       :async                      => false,
-      :raise_exception_on_failure => false
+      :raise_exception_on_failure => false,
+      :encoding => "ascii-8bit"#TODO: add tests for this option
     }
     options = default_options.merge(options)
     raise_exception_on_failure = options[:raise_exception_on_failure]
@@ -61,7 +62,8 @@ class DocRaptor
 
     if block_given?
       ret_val = nil
-      Tempfile.open("docraptor") do |f|
+      Tempfile.open("docraptor", :encoding => options[:encoding]) do |f|
+
         f.sync = true
         f.write(response.body)
         f.rewind
